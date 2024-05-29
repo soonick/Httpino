@@ -7,7 +7,7 @@ jobs:
     steps:
       - add_ssh_keys:
           fingerprints:
-            - "SHA256:nJ4fjs8DBnXE5nlOYmIhp+mdPAhHGegiK+RcxQ+2/kA"
+            - "SHA256:4CUZaQPb6iKZaY1mJ3VvRs98n+5g1d8QCsGnUvUcZIY"
       - checkout
       - run: make verify
   tag:
@@ -16,7 +16,7 @@ jobs:
     steps:
       - add_ssh_keys:
           fingerprints:
-            - "SHA256:nJ4fjs8DBnXE5nlOYmIhp+mdPAhHGegiK+RcxQ+2/kA"
+            - "SHA256:4CUZaQPb6iKZaY1mJ3VvRs98n+5g1d8QCsGnUvUcZIY"
       - checkout
       - run: sh scripts/tag.sh
 
