@@ -7,14 +7,17 @@ cmake: image
 		-w /httpino/build/ \
 		-v $(PWD)/build:/httpino/build \
 		-v $(PWD)/CMakeLists.txt:/httpino/CMakeLists.txt \
+		-v $(PWD)/BoardOptions.cmake:/httpino/BoardOptions.cmake \
 		-v $(PWD)/src:/httpino/src \
 		httpino-dev-image \
 		sh -c "\
-			cmake -D CMAKE_EXPORT_COMPILE_COMMANDS=1 \
-				-D CMAKE_TOOLCHAIN_FILE=Arduino-CMake-Toolchain/Arduino-toolchain.cmake \
-				-D ARDUINO_INSTALL_PATH=/root/.arduino15 \
+			cmake \
+				-D ARDUINO_BOARD_OPTIONS_FILE=/httpino/BoardOptions.cmake \
 				-D ARDUINO_ENABLE_PACKAGE_MANAGER=ON \
-				-D ARDUINO_PLATFORM=arduino.renesas_uno .. && \
+				-D ARDUINO_INSTALL_PATH=/root/.arduino15 \
+				-D ARDUINO_PLATFORM=arduino.renesas_uno \
+				-D CMAKE_EXPORT_COMPILE_COMMANDS=1 \
+				-D CMAKE_TOOLCHAIN_FILE=Arduino-CMake-Toolchain/Arduino-toolchain.cmake .. && \
 			rm -f /httpino/compile_commands.json \
 		"
 .PHONY: cmake
@@ -22,8 +25,9 @@ cmake: image
 build: cmake
 	@docker run -it --rm \
 		-w /httpino/build/ \
-		-v $(PWD)/build:/httpino/build \
+		-v $(PWD)/BoardOptions.cmake:/httpino/BoardOptions.cmake \
 		-v $(PWD)/CMakeLists.txt:/httpino/CMakeLists.txt \
+		-v $(PWD)/build:/httpino/build \
 		-v $(PWD)/src:/httpino/src \
 		httpino-dev-image \
 		sh -c "\
@@ -87,7 +91,7 @@ test: cmake_test
 		"
 .PHONY: test
 
-verify: image build check-format test
+verify: build check-format test
 .PHONY: verify
 
 # Starts a container with a neovim development environment ready to use
