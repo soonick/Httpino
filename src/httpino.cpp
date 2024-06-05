@@ -1,30 +1,35 @@
 #include "httpino.h"
 
-String HttpIno::parseQueryString(const String& line) {
+#include <Hashtable.h>
+
+Hashtable<String, String> HttpIno::parseQueryString(const String& line) {
+  Hashtable<String, String> dictionary;
+
   int start = line.indexOf("?") + 1;
   int end = line.indexOf(" ", start);
   String queryString = line.substring(start, end);
   replace(queryString, '+', ' ');
 
-  String result = "";
   long unsigned int currentStart = 0;
   while (currentStart < queryString.length()) {
-    if (currentStart != 0) {
-      result += ",";
-    }
-
     int currentEnd = queryString.indexOf("&", currentStart);
     if (currentEnd == -1) {
       currentEnd = queryString.length();
     }
 
     String currentPair = queryString.substring(currentStart, currentEnd);
-    result += currentPair;
+    int equalPos = currentPair.indexOf("=");
+    if (equalPos != -1) {
+      // If there is no equal sign, we skip adding it to the result
+      String key = currentPair.substring(0, equalPos);
+      String value = currentPair.substring(equalPos + 1, currentPair.length());
+      dictionary.put(key, value);
+    }
 
     currentStart = currentEnd + 1;
   }
 
-  return result;
+  return dictionary;
 }
 
 void HttpIno::renderHtml(WiFiClient& client, const String& content) {

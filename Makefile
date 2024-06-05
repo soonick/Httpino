@@ -5,9 +5,10 @@ image:
 cmake: image
 	@docker run -it --rm \
 		-w /httpino/build/ \
-		-v $(PWD)/build:/httpino/build \
-		-v $(PWD)/CMakeLists.txt:/httpino/CMakeLists.txt \
 		-v $(PWD)/BoardOptions.cmake:/httpino/BoardOptions.cmake \
+		-v $(PWD)/CMakeLists.txt:/httpino/CMakeLists.txt \
+		-v $(PWD)/build:/httpino/build \
+		-v $(PWD)/deps:/httpino/deps \
 		-v $(PWD)/src:/httpino/src \
 		httpino-dev-image \
 		sh -c "\
@@ -28,6 +29,7 @@ build: cmake
 		-v $(PWD)/BoardOptions.cmake:/httpino/BoardOptions.cmake \
 		-v $(PWD)/CMakeLists.txt:/httpino/CMakeLists.txt \
 		-v $(PWD)/build:/httpino/build \
+		-v $(PWD)/deps:/httpino/deps \
 		-v $(PWD)/src:/httpino/src \
 		httpino-dev-image \
 		sh -c "\
@@ -37,13 +39,16 @@ build: cmake
 
 ssh:
 	@docker run --rm -it \
+		-v $(PWD)/deps:/httpino/deps \
 		-v $(PWD)/src/:/httpino/src \
 		-v $(PWD)/test/:/httpino/test \
 		-w /httpino/ httpino-dev-image bash
 .PHONY: ssh
 
 format:
-	@docker run --rm -it -v $(PWD)/src/:/httpino/src \
+	@docker run --rm -it \
+		-v $(PWD)/deps:/httpino/deps \
+		-v $(PWD)/src/:/httpino/src \
 		-v $(PWD)/test/:/httpino/test \
 		-w /httpino/ \
 		httpino-dev-image \
@@ -52,6 +57,7 @@ format:
 
 check-format:
 	@docker run --rm -it \
+		-v $(PWD)/deps:/httpino/deps \
 		-v $(PWD)/src/:/httpino/src \
 		-v $(PWD)/test/:/httpino/test \
 		-w /httpino/ \
@@ -62,12 +68,13 @@ check-format:
 cmake_test: image
 	@docker run -it --rm \
 		-w /httpino/test/build/ \
-		-v $(PWD)/test/build:/httpino/test/build \
-		-v $(PWD)/test/CMakeLists.txt:/httpino/test/CMakeLists.txt \
+		-v $(PWD)/deps:/httpino/deps \
 		-v $(PWD)/src:/httpino/src \
-		-v $(PWD)/test/src:/httpino/test/src \
-		-v $(PWD)/test/include:/httpino/test/include \
+		-v $(PWD)/test/CMakeLists.txt:/httpino/test/CMakeLists.txt \
+		-v $(PWD)/test/build:/httpino/test/build \
 		-v $(PWD)/test/external:/httpino/test/external \
+		-v $(PWD)/test/include:/httpino/test/include \
+		-v $(PWD)/test/src:/httpino/test/src \
 		httpino-dev-image \
 		sh -c " \
 			cmake -D CMAKE_EXPORT_COMPILE_COMMANDS=1 .. && \
@@ -77,13 +84,14 @@ cmake_test: image
 
 test: cmake_test
 	@docker run -it --rm \
-		-w /httpino/test/build/ \
-		-v $(PWD)/test/build:/httpino/test/build \
-		-v $(PWD)/test/CMakeLists.txt:/httpino/test/CMakeLists.txt \
+		-v $(PWD)/deps:/httpino/deps \
 		-v $(PWD)/src:/httpino/src \
-		-v $(PWD)/test/src:/httpino/test/src \
-		-v $(PWD)/test/include:/httpino/test/include \
+		-v $(PWD)/test/CMakeLists.txt:/httpino/test/CMakeLists.txt \
+		-v $(PWD)/test/build:/httpino/test/build \
 		-v $(PWD)/test/external:/httpino/test/external \
+		-v $(PWD)/test/include:/httpino/test/include \
+		-v $(PWD)/test/src:/httpino/test/src \
+		-w /httpino/test/build/ \
 		httpino-dev-image \
 		sh -c " \
 			make && \
@@ -98,15 +106,16 @@ verify: build check-format test
 vim: cmake cmake_test
 	@docker build -f dockerfiles/dev-vim -t smart-fluid-flow-meter-httpino-dev-vim-image .
 	@docker run --rm -it \
+		-v $(PWD)/CMakeLists.txt:/httpino/CMakeLists.txt \
+		-v $(PWD)/Makefile:/httpino/Makefile \
+		-v $(PWD)/README.md:/httpino/README.md \
 		-v $(PWD)/assets:/httpino/assets \
 		-v $(PWD)/build:/httpino/build \
-		-v $(PWD)/CMakeLists.txt:/httpino/CMakeLists.txt \
-		-v $(PWD)/README.md:/httpino/README.md \
-		-v $(PWD)/Makefile:/httpino/Makefile \
+		-v $(PWD)/deps:/httpino/deps \
+		-v $(PWD)/dev-environments/vim/tmp:/root/.local/share/nvim \
+		-v $(PWD)/dockerfiles:/httpino/dockerfiles \
 		-v $(PWD)/src:/httpino/src \
 		-v $(PWD)/test:/httpino/test \
-		-v $(PWD)/dockerfiles:/httpino/dockerfiles \
-		-v $(PWD)/dev-environments/vim/tmp:/root/.local/share/nvim \
 		-w /httpino/ \
 		smart-fluid-flow-meter-httpino-dev-vim-image \
 		sh -c " \

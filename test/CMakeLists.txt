@@ -3,6 +3,8 @@ project(Httpino CXX)
 
 include_directories(include)
 include_directories(../src)
+include_directories(../deps/ArduinoHashtable/src)
+include_directories(../deps/SimpleVector/src)
 include_directories(external/catch/v2.13.10/include)
 
 set(TESTING_SRCS

@@ -17,8 +17,8 @@ class IPAddress;
 class HardwareSerial {
  public:
   void print(String);
-  void println(String);
   void println(IPAddress);
+  void println(String);
 };
 
 extern HardwareSerial Serial;

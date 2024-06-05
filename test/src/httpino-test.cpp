@@ -1,21 +1,37 @@
 #include "httpino.h"
+#include "Arduino.h"
+
+#include <Hashtable.h>
 #include <catch.hpp>
 
 TEST_CASE("parseQueryString") {
   HttpIno http;
 
   SECTION("Single key value") {
-    String actual = http.parseQueryString("hello?abc=1");
-    REQUIRE(actual == "abc=1");
+    Hashtable<String, String> actual = http.parseQueryString("hello?abc=1");
+    REQUIRE(actual.elements() == 1);
+    REQUIRE(*actual.get("abc") == "1");
   }
 
   SECTION("Multiple key values") {
-    String actual = http.parseQueryString("hello?abc=1&qwer=world");
-    REQUIRE(actual == "abc=1,qwer=world");
+    Hashtable<String, String> actual =
+        http.parseQueryString("hello?abc=1&qwer=world");
+    REQUIRE(actual.elements() == 2);
+    REQUIRE(*actual.get("abc") == "1");
+    REQUIRE(*actual.get("qwer") == "world");
   }
 
   SECTION("Handles spaces") {
-    String actual = http.parseQueryString("hello?full+name=Jose+Shanchez");
-    REQUIRE(actual == "full name=Jose Shanchez");
+    Hashtable<String, String> actual =
+        http.parseQueryString("hello?full+name=Jose+Shanchez");
+    REQUIRE(actual.elements() == 1);
+    REQUIRE(*actual.get("full name") == "Jose Shanchez");
+  }
+
+  SECTION("Skips when no equal sign is found") {
+    Hashtable<String, String> actual =
+        http.parseQueryString("hello?asdf&abc=1");
+    REQUIRE(actual.elements() == 1);
+    REQUIRE(*actual.get("abc") == "1");
   }
 }

@@ -1,0 +1,6 @@
+[submodule "deps/ArduinoHashtable"]
+	path = deps/ArduinoHashtable
+	url = https://github.com/braydenanderson2014/ArduinoHashtable.git
+[submodule "deps/SimpleVector"]
+	path = deps/SimpleVector
+	url = https://github.com/braydenanderson2014/SimpleVector.git

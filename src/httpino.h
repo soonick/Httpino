@@ -1,7 +1,7 @@
 #pragma once
 
-#include "Arduino.h"
-#include "WiFiS3.h"
+#include <Hashtable.h>
+#include <WiFiS3.h>
 
 class HttpIno {
  public:
@@ -12,10 +12,9 @@ class HttpIno {
    *
    * @param line e.g. GET /save?name=Blue+bird&value=jose&name=Uno&value=One
    * HTTP/1.1
-   * @return comma separated list of key values for the query params
-   * (e.g. Blue bird=jose,Uno=One)
+   * @return key values from the query params
    */
-  String parseQueryString(const String& line);
+  Hashtable<String, String> parseQueryString(const String& line);
 
   /**
    * Returns the given content to the given WiFiClient
