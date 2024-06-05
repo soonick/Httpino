@@ -9,6 +9,7 @@ jobs:
           fingerprints:
             - "SHA256:4CUZaQPb6iKZaY1mJ3VvRs98n+5g1d8QCsGnUvUcZIY"
       - checkout
+      - run: git submodule update --init --recursive
       - run: make verify
   tag:
     machine:

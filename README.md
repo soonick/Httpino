@@ -4,6 +4,14 @@
 
 Useful functions when working with HTTP requests and responses in Arduino
 
+## Dependencies
+
+This repo uses submodules for its dependencies. To fetch all submodules:
+
+```
+git submodule update --init --recursive
+```
+
 ## Build
 
 Builds, lints and runs tests
