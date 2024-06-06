@@ -9,6 +9,7 @@ cmake: image
 		-v $(PWD)/CMakeLists.txt:/httpino/CMakeLists.txt \
 		-v $(PWD)/build:/httpino/build \
 		-v $(PWD)/deps:/httpino/deps \
+		-v $(PWD)/include:/httpino/include \
 		-v $(PWD)/src:/httpino/src \
 		httpino-dev-image \
 		sh -c "\
@@ -30,6 +31,7 @@ build: cmake
 		-v $(PWD)/CMakeLists.txt:/httpino/CMakeLists.txt \
 		-v $(PWD)/build:/httpino/build \
 		-v $(PWD)/deps:/httpino/deps \
+		-v $(PWD)/include:/httpino/include \
 		-v $(PWD)/src:/httpino/src \
 		httpino-dev-image \
 		sh -c "\
@@ -40,6 +42,7 @@ build: cmake
 ssh:
 	@docker run --rm -it \
 		-v $(PWD)/deps:/httpino/deps \
+		-v $(PWD)/include:/httpino/include \
 		-v $(PWD)/src/:/httpino/src \
 		-v $(PWD)/test/:/httpino/test \
 		-w /httpino/ httpino-dev-image bash
@@ -48,6 +51,7 @@ ssh:
 format:
 	@docker run --rm -it \
 		-v $(PWD)/deps:/httpino/deps \
+		-v $(PWD)/include:/httpino/include \
 		-v $(PWD)/src/:/httpino/src \
 		-v $(PWD)/test/:/httpino/test \
 		-w /httpino/ \
@@ -58,6 +62,7 @@ format:
 check-format:
 	@docker run --rm -it \
 		-v $(PWD)/deps:/httpino/deps \
+		-v $(PWD)/include:/httpino/include \
 		-v $(PWD)/src/:/httpino/src \
 		-v $(PWD)/test/:/httpino/test \
 		-w /httpino/ \
@@ -69,6 +74,7 @@ cmake_test: image
 	@docker run -it --rm \
 		-w /httpino/test/build/ \
 		-v $(PWD)/deps:/httpino/deps \
+		-v $(PWD)/include:/httpino/include \
 		-v $(PWD)/src:/httpino/src \
 		-v $(PWD)/test/CMakeLists.txt:/httpino/test/CMakeLists.txt \
 		-v $(PWD)/test/build:/httpino/test/build \
@@ -85,6 +91,7 @@ cmake_test: image
 test: cmake_test
 	@docker run -it --rm \
 		-v $(PWD)/deps:/httpino/deps \
+		-v $(PWD)/include:/httpino/include \
 		-v $(PWD)/src:/httpino/src \
 		-v $(PWD)/test/CMakeLists.txt:/httpino/test/CMakeLists.txt \
 		-v $(PWD)/test/build:/httpino/test/build \
@@ -112,6 +119,7 @@ vim: cmake cmake_test
 		-v $(PWD)/assets:/httpino/assets \
 		-v $(PWD)/build:/httpino/build \
 		-v $(PWD)/deps:/httpino/deps \
+		-v $(PWD)/include:/httpino/include \
 		-v $(PWD)/dev-environments/vim/tmp:/root/.local/share/nvim \
 		-v $(PWD)/dockerfiles:/httpino/dockerfiles \
 		-v $(PWD)/src:/httpino/src \

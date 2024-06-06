@@ -1,11 +1,12 @@
 cmake_minimum_required(VERSION 3.27.4)
 project(Httpino CXX)
 
-include_directories(include)
-include_directories(../src)
 include_directories(../deps/ArduinoHashtable/src)
 include_directories(../deps/SimpleVector/src)
+include_directories(../include)
+include_directories(../src)
 include_directories(external/catch/v2.13.10/include)
+include_directories(include)
 
 set(TESTING_SRCS
   ../src/httpino.cpp
