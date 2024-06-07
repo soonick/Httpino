@@ -116,7 +116,6 @@ vim: cmake cmake_test
 		-v $(PWD)/CMakeLists.txt:/httpino/CMakeLists.txt \
 		-v $(PWD)/Makefile:/httpino/Makefile \
 		-v $(PWD)/README.md:/httpino/README.md \
-		-v $(PWD)/assets:/httpino/assets \
 		-v $(PWD)/build:/httpino/build \
 		-v $(PWD)/deps:/httpino/deps \
 		-v $(PWD)/include:/httpino/include \
