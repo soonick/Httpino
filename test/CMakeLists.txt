@@ -1,5 +1,7 @@
 cmake_minimum_required(VERSION 3.27.4)
-project(Httpino CXX)
+project(httpino
+  VERSION 0.1.0
+  LANGUAGES CXX)
 
 include_directories(../deps/ArduinoHashtable/src)
 include_directories(../deps/SimpleVector/src)

@@ -1,4 +1,4 @@
-# Httpino
+# httpino
 
 [![CircleCI](https://dl.circleci.com/status-badge/img/gh/soonick/Httpino/tree/master.svg?style=svg)](https://dl.circleci.com/status-badge/redirect/gh/soonick/Httpino/tree/master)
 
