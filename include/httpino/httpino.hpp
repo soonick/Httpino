@@ -14,7 +14,7 @@ class HttpIno {
    * HTTP/1.1
    * @return key values from the query params
    */
-  Hashtable<String, String> parseQueryString(const String& line);
+  Hashtable<String, String>* parseQueryString(const String& line);
 
   /**
    * Returns the given content to the given WiFiClient

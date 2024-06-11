@@ -2,8 +2,8 @@
 
 #include <Hashtable.h>
 
-Hashtable<String, String> HttpIno::parseQueryString(const String& line) {
-  Hashtable<String, String> dictionary;
+Hashtable<String, String>* HttpIno::parseQueryString(const String& line) {
+  Hashtable<String, String>* dictionary = new Hashtable<String, String>();
 
   int start = line.indexOf("?") + 1;
   int end = line.indexOf(" ", start);
@@ -23,7 +23,7 @@ Hashtable<String, String> HttpIno::parseQueryString(const String& line) {
       // If there is no equal sign, we skip adding it to the result
       String key = currentPair.substring(0, equalPos);
       String value = currentPair.substring(equalPos + 1, currentPair.length());
-      dictionary.put(key, value);
+      dictionary->put(key, value);
     }
 
     currentStart = currentEnd + 1;
