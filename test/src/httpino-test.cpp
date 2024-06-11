@@ -16,10 +16,11 @@ TEST_CASE("parseQueryString") {
 
   SECTION("Multiple key values") {
     Hashtable<String, String>* actual =
-        http.parseQueryString("hello?abc=1&qwer=world");
-    REQUIRE(actual->elements() == 2);
+        http.parseQueryString("hello?abc=1&qwer=world&onemore=yesyes");
+    REQUIRE(actual->elements() == 3);
     REQUIRE(*actual->get("abc") == "1");
     REQUIRE(*actual->get("qwer") == "world");
+    REQUIRE(*actual->get("onemore") == "yesyes");
     delete actual;
   }
 
